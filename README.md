@@ -12,7 +12,9 @@ appropriately.
 This image also contains [ssmtp](https://wiki.debian.org/sSMTP), the extremely
 simple MTA.
 
-This project is designed to be used as a Kubernetes CronJob.
+This project is designed to be used as a Kubernetes Deployment. Usage as a
+Kubernetes CronJob would be preferred, but cannot work due to a technical
+limitation.
 
 ## Configuration
 
@@ -119,7 +121,26 @@ Google GMail for Business email account.
 
 ## Run this container
 
+This command will run the `rancid-run` command within the container, then exit.
+For a production deployment, you should use the included `supercronic` binary
+and a crontab of your choosing.
+
     git clone git@github.com:username/repository.git myrepository
     docker run --rm -it -v $PWD/myrepository:/var/rancid irasnyd/rancid rancid-run -m "your-email@example.com"
 
-You can adapt this example for use as a Kubernetes CronJob.
+You can adapt this example for use as a Kubernetes Deployment by using the
+`supercronic` command to run this command periodically.
+
+## Known Bugs / TODO List
+
+### Kubernetes CronJob
+
+This project currently runs as a Kubernetes Deployment, using the supercronic
+utility as a cron command scheduler. This is a workaround for a technical
+limitation in the Kubernetes CronJob scheduler, which does not yet understand
+the scheduling limitations of Kubernetes PersistentVolume which are backed by
+AWS EBS (Elastic Block Store) block devices. Kubernetes sometimes schedules the
+Pod to a Node in the incorrect AWS Availability Zone (AZ).
+
+The Kubernetes Deployment scheduler is aware of this limitation, and always
+schedules the Pod correctly.

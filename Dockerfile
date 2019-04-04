@@ -1,5 +1,16 @@
 FROM centos:7
 
+# install supercronic
+ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.1.8/supercronic-linux-amd64 \
+    SUPERCRONIC=supercronic-linux-amd64 \
+    SUPERCRONIC_SHA1SUM=be43e64c45acd6ec4fce5831e03759c89676a0ea
+
+RUN curl -fsSLO "$SUPERCRONIC_URL" \
+ && echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - \
+ && chmod +x "$SUPERCRONIC" \
+ && mv "$SUPERCRONIC" "/usr/bin/${SUPERCRONIC}" \
+ && ln -s "/usr/bin/${SUPERCRONIC}" /usr/bin/supercronic
+
 ENV RANCID_VERSION 3.9
 
 # install build-time and run-time dependencies
