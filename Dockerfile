@@ -11,7 +11,7 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
  && mv "$SUPERCRONIC" "/usr/bin/${SUPERCRONIC}" \
  && ln -s "/usr/bin/${SUPERCRONIC}" /usr/bin/supercronic
 
-ENV RANCID_VERSION 3.9
+ENV RANCID_VERSION 3.10
 
 # install build-time and run-time dependencies
 RUN yum -y install epel-release \
